@@ -28,6 +28,12 @@ link to a list of models within an App. This concept became obsolete.
 
 |screenshot-1| |screenshot-2| |screenshot-3|
 
+
+.. note::
+    ``@MasterGowen``: This fork adds support for simple themes, which give you the ability to control the background and text color from the admin panel. The idea is to use this package together with ``django-admin-interface``.
+
+TODO: You might want to move the default color values into the settings.
+
 Installation
 ============
 
@@ -45,13 +51,14 @@ Usage
 
 To use this with your project you need to follow these steps:
 
-#. Add ``django_admin_index`` and ``ordered_model`` to ``INSTALLED_APPS`` in
+#. Add ``django_admin_index``, ``ordered_model`` and ``colorfield`` to ``INSTALLED_APPS`` in
    your Django project's ``settings.py``. Make sure that
    ``django_admin_index`` comes before ``django.contrib.admin``::
 
     INSTALLED_APPS = (
         'django_admin_index',
         'ordered_model',
+        'colorfield'
         ...,
         'django.contrib.admin',
     )
