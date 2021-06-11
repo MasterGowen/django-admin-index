@@ -1,0 +1,37 @@
+<style type="text/css">
+    .dropdown-menu {
+        background-color: {{ dashboard_theme.dm_bc }};
+    }
+
+    .dropdown-menu .dropdown-menu__drop {
+        background-color: {{ dashboard_theme.dm_drop_bc }};
+    }
+
+    .dropdown-menu .dropdown-menu__link.dropdown-menu__link--active,
+    .dropdown-menu .dropdown-menu__link:link.dropdown-menu__link--active,
+    .dropdown-menu .dropdown-menu__link:visited.dropdown-menu__link--active,
+    .dropdown-menu .dropdown-menu__link:hover,
+    .dropdown-menu .dropdown-menu__link:link:hover,
+    .dropdown-menu .dropdown-menu__link:visited:hover {
+        background-color: {{ dashboard_theme.dm_drop_hover_bc }};
+    }
+
+    .dropdown-menu .dropdown-menu__item:hover,
+    .dropdown-menu .dropdown-menu__item:link:hover,
+    .dropdown-menu .dropdown-menu__item:visited:hover,
+    .dropdown-menu .dropdown-menu__item.dropdown-menu__item--active,
+    .dropdown-menu .dropdown-menu__item:link.dropdown-menu__item--active,
+    .dropdown-menu .dropdown-menu__item:visited.dropdown-menu__item--active {
+        background-color: {{ dashboard_theme.dm_hover_bc }};
+    }
+
+    .dropdown-menu .dropdown-menu__item, .dropdown-menu .dropdown-menu__item:link, .dropdown-menu .dropdown-menu__item:visited {
+        color: {{ dashboard_theme.dm_c }};
+    }
+
+    .dropdown-menu .dropdown-menu__link,
+    .dropdown-menu .dropdown-menu__link:link,
+    .dropdown-menu .dropdown-menu__link:visited {
+        color: {{ dashboard_theme.dm_drop_c }};
+    }
+</style>

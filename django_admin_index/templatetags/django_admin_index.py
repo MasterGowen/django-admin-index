@@ -3,7 +3,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.template import Library
 
 from ..conf import settings
-from ..models import AppGroup
+from ..models import AppGroup, Theme
 
 register = Library()
 
@@ -32,3 +32,11 @@ def dashboard_app_list(context):
 @register.simple_tag()
 def admin_index_settings():
     return settings.as_dict()
+
+
+@register.simple_tag(takes_context=True)
+def dashboard_theme(context):
+    theme = Theme.objects.filter(active=True)
+    if theme.exists():
+        return theme.first()
+    return None

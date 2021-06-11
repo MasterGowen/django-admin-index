@@ -1,5 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 
+from colorfield.fields import ColorField
 from django.contrib.admin import site
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -55,19 +56,19 @@ class AppGroupQuerySet(OrderedModelQuerySet):
         app_list = self.prefetch_related("models", "applink_set")
         active_app = request.path == reverse("admin:index")
         for app in app_list:
-            models = []
+            _models = []
             active = False
             for model in app.models.all():
                 key = "{}.{}".format(model.app_label, model.model)
                 o = model_dicts.get(key)
                 if o:
-                    models.append(o)
+                    _models.append(o)
                     added.append(key)
                     if o["active"]:
                         active = True
 
             for app_link in app.applink_set.all():
-                models.append(
+                _models.append(
                     {
                         "name": app_link.name,
                         "app_label": app.slug,
@@ -82,7 +83,7 @@ class AppGroupQuerySet(OrderedModelQuerySet):
                     {
                         "name": app.name,
                         "app_label": app.slug,
-                        "models": sorted(models, key=lambda m: m["name"]),
+                        "models": sorted(_models, key=lambda m: m["name"]),
                         "active": active,
                     }
                 )
@@ -102,7 +103,7 @@ class AppGroupQuerySet(OrderedModelQuerySet):
                     contenttype = ContentTypeProxy.objects.get(
                         app_label=model["app_label"], model=model["object_name"].lower()
                     )
-                    app_group.models.add(contenttype)
+                    app_group.models.add(contenttype)  # noqa
 
             # If apps are created, rerender the list.
             if new_apps:
@@ -138,6 +139,7 @@ class ContentTypeProxy(ContentType):
 class AppGroup(OrderedModel):
     name = models.CharField(_("name"), max_length=200)
     slug = models.SlugField(_("slug"), unique=True)
+    icon = models.FileField(_("icon"), blank=True)
     models = models.ManyToManyField(ContentTypeProxy, blank=True)
 
     objects = AppGroupQuerySet.as_manager()
@@ -147,7 +149,7 @@ class AppGroup(OrderedModel):
         verbose_name_plural = _("application groups")
 
     def natural_key(self):
-        return (self.slug,)
+        return (self.slug,)  # noqa
 
     def __str__(self):
         return self.name
@@ -157,6 +159,7 @@ class AppLink(OrderedModel):
     app_group = models.ForeignKey(AppGroup, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     link = models.CharField(max_length=200)
+    icon = models.FileField(_("icon"), blank=True)
 
     objects = AppLinkQuerySet.as_manager()
 
@@ -166,7 +169,25 @@ class AppLink(OrderedModel):
         unique_together = (("app_group", "link"),)
 
     def natural_key(self):
-        return (self.app_group, self.link)
+        return (self.app_group, self.link)  # noqa
+
+    def __str__(self):
+        return self.name
+
+
+class Theme(models.Model):
+    name = models.CharField(max_length=200, unique=True, db_index=True, verbose_name=_("Theme name"))
+    active = models.BooleanField(default=False, verbose_name=_("Active"))
+    dm_bc = ColorField(default="#417690", verbose_name=_(".dropdown-menu background color"))
+    dm_hover_bc = ColorField(default="#79aec8", verbose_name=_(".dropdown-menu:hover background color"))
+    dm_c = ColorField(default="#fff", verbose_name=_(".dropdown-menu item color"))
+    dm_drop_bc = ColorField(default="#417690", verbose_name=_(".dropdown-menu__drop:hover background color"))
+    dm_drop_hover_bc = ColorField(default="#79aec8", verbose_name=_(".dropdown-menu__drop background color"))
+    dm_drop_c = ColorField(default="#fff", verbose_name=_(".dropdown-menu__drop color"))
+
+    class Meta:
+        verbose_name = _("design theme")
+        verbose_name_plural = _("design themes")
 
     def __str__(self):
         return self.name

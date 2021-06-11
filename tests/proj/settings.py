@@ -28,13 +28,13 @@ SECRET_KEY = "u($kbs9$irs0)436gbo9%!b&#zyd&70tx!n7!i&fl6qun@z1_l"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
 INSTALLED_APPS = [
     "django_admin_index",
+    "colorfield",
     "ordered_model",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -77,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "tests.proj.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -85,13 +84,13 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        "OPTIONS": {"timeout": 1000,},
+        "OPTIONS": {"timeout": 1000, },
     }
 }
 
 CACHES = {
-    "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache",},
-    "dummy": {"BACKEND": "django.core.cache.backends.dummy.DummyCache",},
+    "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", },
+    "dummy": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", },
 }
 
 # Password validation
@@ -103,11 +102,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -122,8 +120,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = "/static/"
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
